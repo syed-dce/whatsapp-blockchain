@@ -10,197 +10,114 @@ import {
   ImageBackground,
   Dimensions,
   View,
+  Image,
   TouchableOpacity,
 } from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 
 import {AppContext} from '../context/Context';
-import Home from './Home';
-import Entypo from 'react-native-vector-icons/Entypo';
-import Ionic from 'react-native-vector-icons/Ionicons';
-import BoxingIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Colors from '../constants/Colors';
-// import NFLScreen from './NFLScreen';
 
-// const Tab = createBottomTabNavigator();
-const Tab = createMaterialTopTabNavigator();
-
-function MyTabBar({state, descriptors, navigation}) {
-  return (
-    <View
-      style={{
-        flexDirection: 'row',
-        backgroundColor: Colors.light.tint,
-        height: 50,
-        // borderRadius: 50,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
-      {state.routes.map((route, index) => {
-        const {options} = descriptors[route.key];
-        const label =
-          options.tabBarLabel !== undefined
-            ? options.tabBarLabel
-            : options.title !== undefined
-            ? options.title
-            : route.name;
-
-        const isFocused = state.index === index;
-
-        const onPress = () => {
-          const event = navigation.emit({
-            type: 'tabPress',
-            target: route.key,
-          });
-
-          if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate(route.name);
-          }
-        };
-
-        const onLongPress = () => {
-          navigation.emit({
-            type: 'tabLongPress',
-            target: route.key,
-          });
-        };
-
-        return (
-          <TouchableOpacity
-            accessibilityRole="button"
-            accessibilityStates={isFocused ? ['selected'] : []}
-            accessibilityLabel={options.tabBarAccessibilityLabel}
-            testID={options.tabBarTestID}
-            onPress={onPress}
-            onLongPress={onLongPress}
-            style={{
-              // flex: label === 'CHATS'? 1: 0,
-              alignItems: 'center',
-              // backgroundColor: 'red',
-              // margin: 1,
-              width:
-                label === 'CHATS' || label === 'STATUS' || label === 'CALLS'
-                  ? '28%'
-                  : '16%',
-            }}>
-            {label === 'CHATS' || label === 'STATUS' || label === 'CALLS' ? (
-              <Text
-                style={{
-                  fontWeight: 'bold',
-                  color: isFocused ? 'white' : Colors.light.tabIconDefault,
-                }}>
-                {label}
-              </Text>
-            ) : (
-              <Entypo name="camera" color={isFocused ? 'white' : Colors.light.tabIconDefault} size={20} />
-            )}
-          </TouchableOpacity>
-        );
-      })}
-    </View>
-  );
-}
-
-function HomeScreen() {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Home!</Text>
-    </View>
-  );
-}
-
-function SettingsScreen() {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Settings!</Text>
-    </View>
-  );
-}
-
-const AllAppTabs = () => {
+const LoggedOut = () => {
   const {viewState, setViewState} = useContext(AppContext);
 
-  return (
-    <>
-      <View style={styles.mainHeader}>
-        <Text style={styles.whatsapp}>WhatsApp</Text>
+  const proceedClicked = () => {
+    setViewState('AllTabs');
+  };
 
-        <View style={styles.headerSubContainer}>
-          <Ionic
-            name="search"
-            color={'white'}
-            size={24}
-            style={styles.headerIcon}
-          />
-          <Entypo
-            name="dots-three-vertical"
-            color={'white'}
-            size={24}
-            style={styles.headerIcon}
-          />
-        </View>
-      </View>
-      <View style={{height: '90%'}}>
-        <NavigationContainer>
-          <Tab.Navigator
-            tabBar={props => <MyTabBar {...props} />}
-            initialRouteName="CHATS"
-            screenOptions={{
-              headerShown: true,
-              tabBarActiveTintColor: 'white',
-              tabBarIndicatorStyle: {
-                backgroundColor: 'white',
-                height: 3,
-              },
-              tabBarStyle: {
-                backgroundColor: Colors.light.tint,
-              },
-            }}>
-            <Tab.Screen
-              name="Camera"
-              component={HomeScreen}
-              options={{
-                tabBarIcon: ({color, size}) => (
-                  <Entypo name="camera" color={color} size={20} />
-                ),
-                tabBarLabel: () => (
-                  <View style={{textAlign: 'center', width: 20}}></View>
-                ),
-              }}
+  return (
+    <View style={styles.mainContainer}>
+      <ImageBackground
+        style={styles.background}
+        resizeMode="cover"
+        // source={require('../assets/bgstill3.jpeg')}
+        >
+        <View style={styles.topContainer}>
+          <View style={styles.iconSubContainer}>
+
+            <Image
+              style={{width: '400%', height: '400%', resizeMode: 'contain'}}
+              // source={require('../assets/logo2.png')}
             />
-            <Tab.Screen name="CHATS" component={HomeScreen} />
-            <Tab.Screen name="STATUS" component={SettingsScreen} />
-            <Tab.Screen name="CALLS" component={SettingsScreen} />
-          </Tab.Navigator>
-        </NavigationContainer>
-      </View>
-    </>
+          </View>
+          <Text style={styles.subHeading}>
+            WHATSAPP ON BLOCKCHAIN
+          </Text>
+          <Text style={styles.subHeading}>
+            WHATSAPP ON BLOCKCHAIN
+          </Text>
+        </View>
+
+        <View style={styles.topContainer}>
+          <TouchableOpacity style={styles.button} onPress={proceedClicked}>
+            <Text style={styles.buttonText}>PROCEED</Text>
+          </TouchableOpacity>
+          <Text style={styles.subHeading2}>
+            By pressing PROCEED you accept the Terms & Conditions and Privacy
+            Policy
+          </Text>
+        </View>
+      </ImageBackground>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  mainHeader: {
-    height: '10%',
-    backgroundColor: Colors.light.tint,
-    padding: 10,
+  mainContainer: {
+    // flex: 1,
+    alignItems: 'center',
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+  },
+  background: {
+    flex: 1,
+    width: Dimensions.get('window').width,
+    alignItems: 'center',
     justifyContent: 'space-between',
+    // margin: 5,
+  },
+  topContainer: {
+    // backgroundColor: 'yellow',
+    margin: 40,
     alignItems: 'center',
-    flexDirection: 'row',
   },
-  headerSubContainer: {
-    flexDirection: 'row',
-  },
-  headerIcon: {
+  iconSubContainer: {
+    // backgroundColor: 'lightgray',
+    alignItems: 'center',
     justifyContent: 'center',
-    alignItems: 'center',
-    marginHorizontal: 5,
+    width: Dimensions.get('window').width * 0.5,
+    height: Dimensions.get('window').width * 0.25,
+    borderRadius: 30,
   },
-  whatsapp: {
+  iconText: {
+    color: 'black',
+    fontWeight: 'bold',
+    fontSize: 20,
+  },
+  subHeading: {
     color: 'white',
-    fontSize: 22,
+    marginTop: 30,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 20
+  },
+  subHeading2: {
+    color: 'white',
+    marginTop: 30,
+    textAlign: 'center',
+    fontWeight: 'bold'
+  },
+  button: {
+    backgroundColor: 'tomato',
+    width: Dimensions.get('window').width * 0.7,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+    borderRadius: 10,
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 15,
   },
 });
 
-export default AllAppTabs;
+export default LoggedOut;

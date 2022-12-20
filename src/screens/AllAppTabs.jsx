@@ -27,6 +27,94 @@ import Colors from '../constants/Colors';
 // const Tab = createBottomTabNavigator();
 const Tab = createMaterialTopTabNavigator();
 
+function MyTabBar({state, descriptors, navigation}) {
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+        backgroundColor: Colors.light.tint,
+        height: 50,
+        // borderRadius: 50,
+        justifyContent: 'center',
+        // alignItems: 'center',
+      }}>
+      {state.routes.map((route, index) => {
+        const {options} = descriptors[route.key];
+        const label =
+          options.tabBarLabel !== undefined
+            ? options.tabBarLabel
+            : options.title !== undefined
+            ? options.title
+            : route.name;
+
+        const isFocused = state.index === index;
+
+        const onPress = () => {
+          const event = navigation.emit({
+            type: 'tabPress',
+            target: route.key,
+          });
+
+          if (!isFocused && !event.defaultPrevented) {
+            navigation.navigate(route.name);
+          }
+        };
+
+        const onLongPress = () => {
+          navigation.emit({
+            type: 'tabLongPress',
+            target: route.key,
+          });
+        };
+
+        return (
+          <TouchableOpacity
+            accessibilityRole="button"
+            accessibilityStates={isFocused ? ['selected'] : []}
+            accessibilityLabel={options.tabBarAccessibilityLabel}
+            testID={options.tabBarTestID}
+            onPress={onPress}
+            onLongPress={onLongPress}
+            style={{
+              // flex: label === 'CHATS'? 1: 0,
+              alignItems: 'center',
+              // backgroundColor: 'red',
+              marginHorizontal: 3,
+              // margin: 1,
+              borderBottomWidth:
+                (isFocused)
+                  ? 4
+                  : 0,
+              borderBottomColor: 'white',
+              width:
+                label === 'CHATS' || label === 'STATUS' || label === 'CALLS'
+                  ? '28%'
+                  : '16%',
+            }}>
+            {label === 'CHATS' || label === 'STATUS' || label === 'CALLS' ? (
+              <Text
+                style={{
+                  marginTop: 10,
+                  fontWeight: 'bold',
+                  color: isFocused ? 'white' : Colors.light.tabIconDefault,
+                }}>
+                {label}
+              </Text>
+            ) : (
+              <Entypo
+                name="camera"
+                color={isFocused ? 'white' : Colors.light.tabIconDefault}
+                size={20}
+                style={{marginTop: 12}} 
+              />
+            )}
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  );
+}
+
 function HomeScreen() {
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -69,7 +157,8 @@ const AllAppTabs = () => {
       <View style={{height: '90%'}}>
         <NavigationContainer>
           <Tab.Navigator
-            initialRouteName="Chats"
+            tabBar={props => <MyTabBar {...props} />}
+            initialRouteName="CHATS"
             screenOptions={{
               headerShown: true,
               tabBarActiveTintColor: 'white',
@@ -84,24 +173,18 @@ const AllAppTabs = () => {
             <Tab.Screen
               name="Camera"
               component={HomeScreen}
-
               options={{
                 tabBarIcon: ({color, size}) => (
                   <Entypo name="camera" color={color} size={20} />
                 ),
                 tabBarLabel: () => (
-                  <View style={{textAlign: 'center', width: 20}}>
-                      
-                  </View>
-                ), 
-                
+                  <View style={{textAlign: 'center', width: 20}}></View>
+                ),
               }}
-              
-              
             />
-            <Tab.Screen name="Chats" component={HomeScreen} />
-            <Tab.Screen name="Status" component={SettingsScreen} />
-            <Tab.Screen name="Calls" component={SettingsScreen} />
+            <Tab.Screen name="CHATS" component={HomeScreen} />
+            <Tab.Screen name="STATUS" component={SettingsScreen} />
+            <Tab.Screen name="CALLS" component={SettingsScreen} />
           </Tab.Navigator>
         </NavigationContainer>
       </View>
