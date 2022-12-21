@@ -17,7 +17,7 @@ import {
 import {AppContext} from '../context/Context';
 import Colors from '../constants/Colors';
 
-const LoggedOut = () => {
+const Opening = () => {
   const {viewState, setViewState} = useContext(AppContext);
 
   const proceedClicked = () => {
@@ -31,15 +31,9 @@ const LoggedOut = () => {
         style={{width: '85%', height: '50%', resizeMode: 'contain'}}
         source={require('../assets/welcome.png')}
       />
-      <TouchableOpacity style={styles.button} onPress={proceedClicked}>
-        <Text style={styles.buttonText}>CREATE NEW ACCOUNT</Text>
-      </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={proceedClicked}>
-        <Text style={styles.buttonText}>SIGN-IN USING PRIVATE KEY</Text>
-      </TouchableOpacity>
-
-    </View> 
+      <Text style={styles.mainHeading}>Opening ...</Text>
+    </View>
   );
 };
 
@@ -62,7 +56,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 15,
     borderRadius: 10,
-    marginVertical: 15
+    marginVertical: 15,
   },
   buttonText: {
     color: 'white',
@@ -71,4 +65,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoggedOut;
+export default Opening;

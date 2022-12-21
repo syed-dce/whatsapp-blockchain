@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {
   SafeAreaView,
@@ -26,12 +26,14 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+import * as RNFS from 'react-native-fs';
 import {AppContext} from './src/context/Context';
 import LoggedOut from './src/screens/LoggedOut';
 import AllAppTabs from './src/screens/AllAppTabs';
+import Opening from './src/screens/Opening';
 
 const App = () => {
-  const [viewState, setViewState] = useState('LoggedOut');
+  const [viewState, setViewState] = useState('Opening');
 
   const [infoState, setInfoState] = useState('');
 
@@ -42,9 +44,31 @@ const App = () => {
     setInfoState,
   };
 
+  const checkLogIn = async () => {
+    const KeyFilePath = RNFS.DocumentDirectoryPath + '/key.json';
+    try {
+      let res = await RNFS.readFile(KeyFilePath, 'ascii');
+      console.log(res);
+    } catch (err) {
+      setViewState('LoggedOut');
+      // try {
+      //   (async () => {
+      //     await generateKey();
+      //     await RNFS.writeFile(KeyFilePath, privateKey, 'ascii');
+      //   })();
+      // } catch (err) {}
+    }
+    // return keyPair;
+  };
+
+  useEffect(() => {
+    checkLogIn();
+  }, []);
+
   return (
     <>
       <AppContext.Provider value={value}>
+        {viewState === 'Opening' ? <Opening /> : <></>}
         {viewState === 'LoggedOut' ? <LoggedOut /> : <></>}
         {viewState === 'AllTabs' ? <AllAppTabs /> : <></>}
       </AppContext.Provider>
