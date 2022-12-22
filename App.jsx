@@ -31,6 +31,7 @@ import {AppContext} from './src/context/Context';
 import LoggedOut from './src/screens/LoggedOut';
 import AllAppTabs from './src/screens/AllAppTabs';
 import Opening from './src/screens/Opening';
+import ImportKey from './src/screens/ImportKey';
 
 const App = () => {
   const [viewState, setViewState] = useState('Opening');
@@ -69,6 +70,7 @@ const App = () => {
     <>
       <AppContext.Provider value={value}>
         {viewState === 'Opening' ? <Opening /> : <></>}
+        {viewState === 'Import' ? <ImportKey /> : <></>}
         {viewState === 'LoggedOut' ? <LoggedOut /> : <></>}
         {viewState === 'AllTabs' ? <AllAppTabs /> : <></>}
       </AppContext.Provider>

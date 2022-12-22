@@ -24,6 +24,11 @@ const LoggedOut = () => {
     setViewState('AllTabs');
   };
 
+
+  const importClicked = () => {
+    setViewState('Import');
+  };
+
   return (
     <View style={styles.mainContainer}>
       <Text style={styles.mainHeading}>WhatsApp on Blockchain</Text>
@@ -35,8 +40,8 @@ const LoggedOut = () => {
         <Text style={styles.buttonText}>CREATE NEW ACCOUNT</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={proceedClicked}>
-        <Text style={styles.buttonText}>SIGN-IN USING PRIVATE KEY</Text>
+      <TouchableOpacity style={styles.button} onPress={importClicked}>
+        <Text style={styles.buttonText}>SIGN-IN USING KEY</Text>
       </TouchableOpacity>
 
     </View> 
