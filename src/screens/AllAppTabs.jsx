@@ -22,7 +22,8 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Ionic from 'react-native-vector-icons/Ionicons';
 import BoxingIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Colors from '../constants/Colors';
-// import NFLScreen from './NFLScreen';
+
+import ChatScreen from './ChatScreen';
 
 // const Tab = createBottomTabNavigator();
 const Tab = createMaterialTopTabNavigator();
@@ -182,7 +183,7 @@ const AllAppTabs = () => {
                 ),
               }}
             />
-            <Tab.Screen name="CHATS" component={HomeScreen} />
+            <Tab.Screen name="CHATS" component={ChatScreen} />
             <Tab.Screen name="STATUS" component={SettingsScreen} />
             <Tab.Screen name="CALLS" component={SettingsScreen} />
           </Tab.Navigator>
